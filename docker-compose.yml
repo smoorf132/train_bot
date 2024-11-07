@@ -1,0 +1,53 @@
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    env_file: .env
+
+    networks:
+      - aiogram_network
+
+    user: bot
+
+    stop_signal: SIGINT
+
+    depends_on:
+      - redis
+
+    restart: always
+
+    entrypoint: [ "python", "-m", "src" ]
+
+  redis:
+    image: redis:7.4.1
+
+    command:
+      - --port 6379
+      - --protected-mode no
+      - --loglevel notice
+      - --requirepass $REDIS_PASSWORD
+      - --maxmemory 5GB
+      - --save 60 300
+      - --dir /data
+      - --dbfilename dump.rdb
+      - --rdbcompression yes
+      - --rdbchecksum yes
+      - --always-show-logo yes
+
+    networks:
+      - aiogram_network
+
+    ports:
+      - "127.0.0.1:6379:6379"
+
+    volumes:
+      - ./redis/data:/data
+
+    restart: always
+
+    entrypoint: [ "redis-server" ]
+
+networks:
+  aiogram_network:
