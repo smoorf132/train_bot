@@ -6,6 +6,6 @@ def setup_commands_router():
 
     router = Router()
 
-    router.include_routers(quiz.router, send.router, start.router)
+    router.include_routers(send.router, quiz.router, start.router)
     
     return router

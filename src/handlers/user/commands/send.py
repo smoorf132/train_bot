@@ -20,6 +20,9 @@ from src.utils.broadcast import Mailing
 router = Router()
 
 
+router.message.filter()
+
+
 @router.message(Command("send"))
 async def send_func(message: Message, state: FSMContext):
     await state.set_state(BroadcastStates.writing)
@@ -183,6 +186,20 @@ async def sending_func(
     ))
     await call.message.edit_text("<i>Рассылка успешно начата. \nРассылку получат: {} пользователей</i>".format(len(users)), parse_mode="html", reply_markup=stop_mailing())
     await state.clear()
+
+
+@router.callback_query(
+    ConfirmingCallback.filter(
+        F.action == "back"
+    )
+)
+async def back_mailing_button(
+        call: types.CallbackQuery,
+        state: FSMContext
+):
+    await state.clear()
+    await call.message.edit_text(
+        "Рассылка успешно отменена!")
 
 
 @router.callback_query(

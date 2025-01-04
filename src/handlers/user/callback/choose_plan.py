@@ -22,7 +22,7 @@ async def back_but(callback: CallbackQuery):
     )
 
 
-@router.callback_query(SelectTypeCallback.filter(), StateFilter(QuizStates.select_type))
+@router.callback_query(SelectTypeCallback.filter())
 async def select_type_func(callback: CallbackQuery, callback_data: SelectTypeCallback, state: FSMContext):
     plan_type = callback_data.type
     await state.update_data(plan_type=plan_type)
