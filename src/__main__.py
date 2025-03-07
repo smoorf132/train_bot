@@ -21,6 +21,7 @@ from src.middlewares.album import AlbumMiddleware
 from src.middlewares.db_middleware import CheckSubscriptionMiddleware, DbMiddleware, UserMiddleware
 from src.settings import Settings
 from src.utils.create_sessionmaker import create_sessionmaker_func
+from src.db.base import init_db
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -43,7 +44,8 @@ async def main() -> None:
         default=DefaultBotProperties(parse_mode="HTML"),
     )
 
-    sessionmaker = create_sessionmaker_func(url=settings.psql_dsn())
+    engine, sessionmaker = create_sessionmaker_func(url=settings.psql_dsn())
+    await init_db(engine)
 
     storage = RedisStorage(
         redis=await settings.redis_dsn(),

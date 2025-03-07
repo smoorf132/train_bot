@@ -17,9 +17,9 @@ class Users(BaseModel):
         nullable=False,
         server_default=expression.text("(now() AT TIME ZONE 'UTC'::text)"),
     )
-    gender: Mapped[str] = mapped_column(VARCHAR(6))
-    age: Mapped[int] = mapped_column(INTEGER)
-    weight: Mapped[int] = mapped_column(INTEGER)
-    height: Mapped[int] = mapped_column(INTEGER)
+    gender: Mapped[str] = mapped_column(VARCHAR(6), nullable=True)
+    age: Mapped[int] = mapped_column(INTEGER, nullable=True)
+    weight: Mapped[int] = mapped_column(INTEGER, nullable=True)
+    height: Mapped[int] = mapped_column(INTEGER, nullable=True)
 
-    __table_args__ = {'schema': 'sport'}
+    __table_args__ = {'schema': 'train_bot'}

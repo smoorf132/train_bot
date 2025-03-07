@@ -24,7 +24,7 @@ services:
     image: redis:7.4.1
 
     command:
-      - --port 6380
+      - --port 6379
       - --protected-mode no
       - --loglevel notice
       - --requirepass $REDIS_PASSWORD
@@ -38,9 +38,6 @@ services:
 
     networks:
       - aiogram_network
-
-    ports:
-      - "127.0.0.1:6380:6380"
 
     volumes:
       - ./redis/data:/data
